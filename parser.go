@@ -123,7 +123,8 @@ func matchWhitespace(s *goparsify.State) {
 	}
 }
 
-func ParseData(data string) (*Package, error) {
+// Parse parses a pkg-config data blob into a Package or returns an error.
+func Parse(data string) (*Package, error) {
 	pkg := Package{}
 
 	result, _, err := goparsify.Run(documentChain, data, matchWhitespace)

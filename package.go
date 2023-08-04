@@ -54,11 +54,6 @@ type Dependency struct {
 	Version        string
 }
 
-// Parse parses a pkg-config data blob into a Package or returns an error.
-func Parse(data []byte) (*Package, error) {
-	return nil, nil
-}
-
 // Load loads a pkg-config data file from disk and returns a Package or an error.
 func Load(path string) (*Package, error) {
 	data, err := os.ReadFile(path)
@@ -66,5 +61,5 @@ func Load(path string) (*Package, error) {
 		return nil, err
 	}
 
-	return Parse(data)
+	return Parse(string(data))
 }
