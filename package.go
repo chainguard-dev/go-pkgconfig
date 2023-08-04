@@ -20,13 +20,16 @@ import (
 
 // Package contains the relevant information from a pkg-config file.
 type Package struct {
-	Name        string
-	Description string
-	Version     string
-	URL         string
-	Cflags      string
-	Libs        string
-	LibsPrivate string
+	Vars map[string]string
+
+	Name          string
+	Description   string
+	Version       string
+	URL           string
+	Cflags        string
+	CflagsPrivate string
+	Libs          string
+	LibsPrivate   string
 
 	Requires         []Dependency
 	RequiresPrivate  []Dependency
