@@ -40,7 +40,7 @@ type DependencyList struct {
 var (
 	comment = goparsify.Seq("#", goparsify.NotChars("#\n"))
 
-	key                = goparsify.Chars("a-zA-Z0-9_")
+	key                = goparsify.Chars("a-zA-Z0-9_.")
 	value              = goparsify.NotChars(":=\n").Map(func(n *goparsify.Result) { n.Result = n.Token })
 	variableAssignment = goparsify.Seq(key, "=", value).Map(func(n *goparsify.Result) {
 		n.Result = Variable{
@@ -102,7 +102,7 @@ var (
 		}
 	})
 
-	documentChain = goparsify.Many(goparsify.Any(comment, variableAssignment, dependencyListAssignment, propertyAssignment), goparsify.Maybe("\n")).Map(func(n *goparsify.Result) {
+	documentChain = goparsify.Many(goparsify.Any("\n", comment, variableAssignment, dependencyListAssignment, propertyAssignment), goparsify.Maybe("\n")).Map(func(n *goparsify.Result) {
 		res := []interface{}{}
 
 		for _, child := range n.Child {
@@ -125,7 +125,7 @@ func matchWhitespace(s *goparsify.State) {
 
 // Parse parses a pkg-config data blob into a Package or returns an error.
 func Parse(data string) (*Package, error) {
-	pkg := Package{}
+	pkg := Package{Vars: map[string]string{}}
 
 	result, _, err := goparsify.Run(documentChain, data, matchWhitespace)
 	if err != nil {
