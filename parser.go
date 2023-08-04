@@ -16,10 +16,11 @@ package pkgconfig
 
 import (
 	"fmt"
-	"github.com/ijt/goparsify"
 	"strings"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/ijt/goparsify"
 )
 
 type Property struct {
