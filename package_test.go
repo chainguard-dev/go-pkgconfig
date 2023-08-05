@@ -41,3 +41,13 @@ func Test_WhitespaceTolerance(t *testing.T) {
 
 	require.Equal(t, pkg.RequiresPrivate[0].Identifier, "zlib")
 }
+
+func Test_CommentParsing(t *testing.T) {
+	pkg, err := Load("testdata/lzo2.pc")
+
+	require.NoError(t, err)
+
+	require.Equal(t, pkg.Name, "lzo2")
+	require.Equal(t, pkg.Version, "2.10")
+	require.Equal(t, pkg.URL, "http://www.oberhumer.com/opensource/lzo/")
+}

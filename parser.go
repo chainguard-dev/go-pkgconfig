@@ -39,19 +39,19 @@ type DependencyList struct {
 }
 
 var (
-	comment = goparsify.Seq("#", goparsify.NotChars("#\n"))
+	comment = goparsify.Seq("#", goparsify.Maybe(goparsify.NotChars("#\n")))
 
 	key                = goparsify.Chars("a-zA-Z0-9_.")
-	value              = goparsify.NotChars(":=\n").Map(func(n *goparsify.Result) { n.Result = n.Token })
+	value              = goparsify.NotChars("\n").Map(func(n *goparsify.Result) { n.Result = n.Token })
 	variableAssignment = goparsify.Seq(key, "=", value).Map(func(n *goparsify.Result) {
 		n.Result = Variable{
 			Key:   n.Child[0].Token,
 			Value: n.Child[2].Token,
 		}
 	})
-	propertyAssignment = goparsify.Seq(key, ":", value).Map(func(n *goparsify.Result) {
+	propertyAssignment = goparsify.Seq(key, goparsify.Cut(), ":", value).Map(func(n *goparsify.Result) {
 		key := strings.ToTitle(n.Child[0].Token)
-		value := n.Child[2].Token
+		value := n.Child[3].Token
 
 		n.Result = Property{
 			Key:   key,
@@ -103,7 +103,7 @@ var (
 		}
 	})
 
-	documentChain = goparsify.Many(goparsify.Any("\n", comment, variableAssignment, dependencyListAssignment, propertyAssignment), goparsify.Maybe("\n")).Map(func(n *goparsify.Result) {
+	documentChain = goparsify.Many(goparsify.Any("\n", comment, variableAssignment, dependencyListAssignment, propertyAssignment)).Map(func(n *goparsify.Result) {
 		res := []interface{}{}
 
 		for _, child := range n.Child {
