@@ -51,3 +51,12 @@ func Test_CommentParsing(t *testing.T) {
 	require.Equal(t, pkg.Version, "2.10")
 	require.Equal(t, pkg.URL, "http://www.oberhumer.com/opensource/lzo/")
 }
+
+func Test_LoadOpenBLAS(t *testing.T) {
+	pkg, err := Load("testdata/openblas.pc")
+	require.NoError(t, err)
+
+	require.Equal(t, pkg.Name, "openblas")
+	require.Equal(t, pkg.Description, "OpenBLAS is an optimized BLAS library based on GotoBLAS2 1.13 BSD version")
+	require.Equal(t, pkg.Version, "0.3.23")
+}
