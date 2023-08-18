@@ -124,6 +124,7 @@ func matchWhitespace(s *goparsify.State) {
 	}
 }
 
+//nolint:unparam
 func (pkg *Package) replaceVariables(input string) (string, error) {
 	mutatedInput := input
 
