@@ -124,6 +124,16 @@ func matchWhitespace(s *goparsify.State) {
 	}
 }
 
+func (pkg *Package) replaceVariables(input string) (string, error) {
+	mutatedInput := input
+
+	for k, v := range pkg.Vars {
+		mutatedInput = strings.ReplaceAll(mutatedInput, fmt.Sprintf("${%s}", k), v)
+	}
+
+	return mutatedInput, nil
+}
+
 // Parse parses a pkg-config data blob into a Package or returns an error.
 func Parse(data string) (*Package, error) {
 	pkg := Package{Vars: map[string]string{}}
@@ -140,26 +150,36 @@ func Parse(data string) (*Package, error) {
 	for _, astNode := range astTree {
 		switch specializedNode := astNode.(type) {
 		case Variable:
-			pkg.Vars[specializedNode.Key] = specializedNode.Value
+			finalValue, err := pkg.replaceVariables(specializedNode.Value)
+			if err != nil {
+				return nil, err
+			}
+
+			pkg.Vars[specializedNode.Key] = finalValue
 
 		case Property:
+			finalValue, err := pkg.replaceVariables(specializedNode.Value)
+			if err != nil {
+				return nil, err
+			}
+
 			switch specializedNode.Key {
 			case "NAME":
-				pkg.Name = specializedNode.Value
+				pkg.Name = finalValue
 			case "VERSION":
-				pkg.Version = specializedNode.Value
+				pkg.Version = finalValue
 			case "DESCRIPTION":
-				pkg.Description = specializedNode.Value
+				pkg.Description = finalValue
 			case "URL":
-				pkg.URL = specializedNode.Value
+				pkg.URL = finalValue
 			case "CFLAGS":
-				pkg.Cflags = specializedNode.Value
+				pkg.Cflags = finalValue
 			case "CFLAGS.PRIVATE":
-				pkg.CflagsPrivate = specializedNode.Value
+				pkg.CflagsPrivate = finalValue
 			case "LIBS":
-				pkg.Libs = specializedNode.Value
+				pkg.Libs = finalValue
 			case "LIBS.PRIVATE":
-				pkg.LibsPrivate = specializedNode.Value
+				pkg.LibsPrivate = finalValue
 			}
 
 		case DependencyList:
