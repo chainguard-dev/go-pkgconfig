@@ -43,13 +43,13 @@ var (
 
 	key                = goparsify.Chars("a-zA-Z0-9_.")
 	value              = goparsify.NotChars("\n").Map(func(n *goparsify.Result) { n.Result = n.Token })
-	variableAssignment = goparsify.Seq(key, "=", value).Map(func(n *goparsify.Result) {
+	variableAssignment = goparsify.Seq(key, "=", goparsify.Maybe(value)).Map(func(n *goparsify.Result) {
 		n.Result = Variable{
 			Key:   n.Child[0].Token,
 			Value: n.Child[2].Token,
 		}
 	})
-	propertyAssignment = goparsify.Seq(key, goparsify.Cut(), ":", value).Map(func(n *goparsify.Result) {
+	propertyAssignment = goparsify.Seq(key, goparsify.Cut(), ":", goparsify.Maybe(value)).Map(func(n *goparsify.Result) {
 		key := strings.ToTitle(n.Child[0].Token)
 		value := n.Child[3].Token
 
