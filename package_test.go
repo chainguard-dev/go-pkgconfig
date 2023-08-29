@@ -60,3 +60,11 @@ func Test_LoadOpenBLAS(t *testing.T) {
 	require.Equal(t, pkg.Description, "OpenBLAS is an optimized BLAS library based on GotoBLAS2 1.13 BSD version")
 	require.Equal(t, pkg.Version, "0.3.23")
 }
+
+func Test_LoadPython(t *testing.T) {
+	pkg, err := Load("testdata/python-3.11.pc")
+	require.NoError(t, err)
+
+	require.Equal(t, pkg.Name, "Python")
+	require.Equal(t, pkg.Version, "3.11")
+}
