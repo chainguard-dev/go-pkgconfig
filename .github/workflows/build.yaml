@@ -30,7 +30,7 @@ jobs:
           go-version: '1.20'
           check-latest: true
 
-      - uses: chainguard-dev/actions/goimports@538d1927b846546b620784754c33e2a1db86e217 # main
+      - uses: chainguard-dev/actions/goimports@a0a960b6ef0a72502b0a8eba85b7f3c00c669505 # main
       - run: |
           go build ./...
           go test ./... -race
