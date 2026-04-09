@@ -67,7 +67,7 @@ var (
 	verEqual            = goparsify.Exact("=").Map(func(n *goparsify.Result) { n.Result = VersionEqual })
 	verGreaterThanEqual = goparsify.Exact(">").Map(func(n *goparsify.Result) { n.Result = VersionGreaterThanEqual })
 	verGreaterThan      = goparsify.Exact(">=").Map(func(n *goparsify.Result) { n.Result = VersionGreaterThan })
-	verMatch            = goparsify.Any(verLessThanEqual, verLessThan, verEqual, verGreaterThan, verGreaterThanEqual)
+	verMatch            = goparsify.Any(verLessThanEqual, verLessThan, verEqual, verGreaterThanEqual, verGreaterThan)
 
 	dependencyChain = goparsify.Seq(identifier, verMatch, version)
 	dependency      = goparsify.Any(dependencyChain, identifier)
