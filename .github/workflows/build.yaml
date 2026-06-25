@@ -2,16 +2,18 @@ name: ci
 
 on:
   pull_request:
-    branches: ['main']
+    branches:
+      - 'main'
   push:
-    branches: ['main']
+    branches:
+      - 'main'
 
 permissions: {}
 
 jobs:
   build:
-    name: build
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
 
