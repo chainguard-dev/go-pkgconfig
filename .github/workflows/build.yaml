@@ -32,7 +32,7 @@ jobs:
           check-latest: true
           cache: false
 
-      - uses: chainguard-dev/actions/goimports@e1c4977ad9cb32b12c5b222ec0134a22bec60bd5 # v1.6.25
+      - uses: chainguard-dev/actions/goimports@8f31e9482b447ff2c69eca944a09b4b31a4a85d0 # v1.7.2
 
       - name: Build and Test
         run: |
